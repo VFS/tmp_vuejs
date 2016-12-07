@@ -1,0 +1,68 @@
+<script src="vue.js"></script>
+
+<style>
+  #debug{
+    background-color: red;
+    display:block;
+  }
+</style>
+
+<div id="app">
+  <button @click="debug = !debug">debug</button>
+  <div v-show="debug" id="debug">
+    <p>Stage: {{ stage }}</p>
+    <button @click="monster.life -= 5">- monster life</button>
+    <button @click="player.life -= 5">- player life</button>
+  </div>
+
+
+  <div>
+    <h1>YOU</h1>
+    <p>{{ player.life }}</p>
+  </div>
+
+  <div>
+    <h1>MONSTER</h1>
+    <p>{{ monster.life }}</p>
+  </div>
+
+
+  <template v-if="stage === 0">
+    <button @click="newGame()">START NEW GAME</button>
+  </template>
+
+  <template v-else-if="stage == 1">
+    <button>ATTACK</button>
+    <button>SPECIAL ATTACK</button>
+    <button>HEAL</button>
+    <button @click="this.stage = 0">GIVE UP</button>
+  </template>
+
+  <template v-else-if="stage === 2">
+  </template>
+
+
+</div>
+
+
+<script>
+  new Vue({
+    el: '#app',
+    methods: {
+      newGame: function newGame(){
+        this.stage = 1;
+        this.player.life=100;
+        this.monster.life=100;
+      }
+    },
+    watch: {
+
+    },
+    data: {
+      debug: false,
+      stage: 0,
+      player: {life: 100},
+      monster: {life: 100}
+    }
+  })
+</script>

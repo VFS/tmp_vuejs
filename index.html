@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+  <button @click="debug = !debug">debug</button>
+
+  <!-- Hidden cheat menu -->
+  <div v-show="debug" id="debug">
+    <section class="row">
+      <div class="small-6 columns">
+        <p>State: {{ state }}</p>
+      </div>
+      <div class="small-6 columns">
+        <button @click="player.life -= 5">-p</button>
+        <button @click="monster.life -= 5">-m</button>
+        <button @click="startGame()">Reset</button>
+        <button @click="monsterAttack()">M Attack</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="row">
+      <div class="small-6 columns">
+          <h1 class="text-center">{{ player.name }}</h1>
+          <div class="healthbar">
+              <div
+                class="healthbar text-center"
+                style="background-color: green; margin: 0; color: white;"
+                :style="{width: player.life + '%'}">
+                {{ player.life < 0 ? 0 : player.life }}
+              </div>
+          </div>
+      </div>
+      <div class="small-6 columns">
+          <h1 class="text-center">{{ monster.name }}</h1>
+          <div class="healthbar">
+              <div
+                class="healthbar text-center"
+                style="background-color: green; margin: 0; color: white;"
+                :style="{width: monster.life + '%'}">
+                {{ monster.life < 0 ? 0 : monster.life }}
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <section class="row controls" v-if="state == 0">
+      <div class="small-12 columns">
+          <button @click="startGame()" id="start-game">START NEW GAME</button>
+      </div>
+  </section>
+
+  <section class="row controls" v-if="state == 1">
+      <div class="small-12 columns">
+          <button id="attack" @click="attack">ATTACK</button>
+          <button id="special-attack" @click="special">SPECIAL ATTACK</button>
+          <button id="heal" @click="heal">HEAL</button>
+          <button id="give-up" @click="giveUp">GIVE UP</button>
+      </div>
+  </section>
+
+  <section class="row controls" v-if="state == 3">
+      <div class="small-12 columns">
+          <h1 class="text-center">You Won!</h1>
+          <button @click="startGame()" id="start-game">RESTART</button>
+      </div>
+  </section>
+
+  <section class="row log" v-if="state != 0">
+      <div class="small-12 columns">
+          <ul>
+              <li>sdf</li>
+          </ul>
+      </div>
+  </section>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
