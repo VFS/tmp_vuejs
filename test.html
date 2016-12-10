@@ -1,0 +1,15 @@
+<script src="vue.js"></script>
+
+<div id="app">
+  {{ player[0].life }}
+  {{ player[1].name }}
+</div>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      player: [{life:12},{life: 40, name:"xxx"}]
+    }
+  })
+</script>

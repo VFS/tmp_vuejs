@@ -53,6 +53,23 @@ button {
     margin: 10px;
 }
 
+#debug {
+  background-color: #ffc0c1;
+  box-shadow: 0 1px 1px black;
+}
+
+
+#debug * {
+  margin: 1px !important; 
+}
+
+#debug button {
+    font-size: 12px !important;
+    padding: 5px !important;
+    box-shadow: 0 1px 1px black;
+    margin: 5px !important;
+}
+
 #start-game {
     background-color: #aaffb0;
 }

@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Monster Slayer</title>
-    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <meta charset="utf-8" />
+    <script src="vue.js"></script>
     <link rel="stylesheet" href="css/foundation.min.css">
     <link rel="stylesheet" href="css/app.css">
 </head>
@@ -13,39 +14,68 @@
   <!-- Hidden cheat menu -->
   <div v-show="debug" id="debug">
     <section class="row">
-      <div class="small-6 columns">
-        <p>State: {{ state }}</p>
+      <div class="small-2 columns">
+        <p>State:
+        <select v-model="state">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+        </select></p>
       </div>
-      <div class="small-6 columns">
-        <button @click="player.life -= 5">-p</button>
-        <button @click="monster.life -= 5">-m</button>
-        <button @click="startGame()">Reset</button>
-        <button @click="monsterAttack()">M Attack</button>
+
+      <div class="small-3 columns">
+        <p>Attack:</p>
+        <button class="button-small" @click="attack(0,1)">P->M</button>
+        <button @click="attack(1,0)">M->P</button>
+
+        <p>Special:</p>
+        <button @click="special(0,1)">P->M</button>
+        <button @click="special(1,0)">M->P</button>
+
+        <p>Heal:</p>
+        <button @click="heal(0)">P</button>
+        <button @click="heal(1)">M</button>
+
+      </div>
+
+      <div class="small-3 columns">
+        <p>{{ player[0].name }}'s life:</p>
+        <button @click="player[0].life -= 5">-5</button>
+        <button @click="player[0].life += 5">+5</button>
+
+        <p>{{ player[1].name }}'s life:</p>
+        <button @click="player[1].life -= 5">-5</button>
+        <button @click="player[1].life += 5">+5</button>
+
+        <button @click="startGame()">Restart</button>
       </div>
     </section>
   </div>
 
   <section class="row">
       <div class="small-6 columns">
-          <h1 class="text-center">{{ player.name }}</h1>
+          <h1 class="text-center">{{ player[0].name }}</h1>
           <div class="healthbar">
               <div
                 class="healthbar text-center"
                 style="background-color: green; margin: 0; color: white;"
-                :style="{width: player.life + '%'}">
-                {{ player.life < 0 ? 0 : player.life }}
+                :style="{width: player[0].life < 0 ? 0 + '%' : player[0].life + '%'}">
+                {{ player[0].life < 0 ? 0 : player[0].life }}
               </div>
+              ATK: {{ player[0].aMin }}-{{ player[0].aMax }}
           </div>
       </div>
       <div class="small-6 columns">
-          <h1 class="text-center">{{ monster.name }}</h1>
+          <h1 class="text-center">{{ player[1].name }}</h1>
           <div class="healthbar">
               <div
                 class="healthbar text-center"
                 style="background-color: green; margin: 0; color: white;"
-                :style="{width: monster.life + '%'}">
-                {{ monster.life < 0 ? 0 : monster.life }}
+                :style="{width: player[1].life < 0 ? 0 + '%' : player[1].life + '%'}">
+                {{ player[1].life < 0 ? 0 : player[1].life }}
               </div>
+              ATK: {{ player[1].aMin }}-{{ player[1].aMax }}
           </div>
       </div>
   </section>
@@ -58,16 +88,17 @@
 
   <section class="row controls" v-if="state == 1">
       <div class="small-12 columns">
-          <button id="attack" @click="attack">ATTACK</button>
-          <button id="special-attack" @click="special">SPECIAL ATTACK</button>
-          <button id="heal" @click="heal">HEAL</button>
+          <button id="attack" @click="attack(0,1,1)">ATTACK</button>
+          <button id="special-attack" @click="special(0,1)">SPECIAL ATTACK</button>
+          <button id="heal" @click="heal(0)">HEAL</button>
           <button id="give-up" @click="giveUp">GIVE UP</button>
       </div>
   </section>
 
   <section class="row controls" v-if="state == 3">
       <div class="small-12 columns">
-          <h1 class="text-center">You Won!</h1>
+          <h1 class="text-center">{{ winner }}</h1>
+          <p>Try again?</p>
           <button @click="startGame()" id="start-game">RESTART</button>
       </div>
   </section>
