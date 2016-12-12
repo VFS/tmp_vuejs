@@ -15,16 +15,10 @@ new Vue({
     state: 0,
     player: [
       {life: 0, lifeM: 100, aMin: 3, aMax: 10, delay: 0000, name: 'You'},
-      {life: 0, lifeM: 100, aMin: 5, aMax: 12, delay: 1000, name: 'Monster'}
-    ]
+      {life: 0, lifeM: 100, aMin: 5, aMax: 12, delay: 1000, name: 'Monster'}],
+    log: []
   },
   computed: {
-    lifeScale: function() {
-      var value = this.player[player].life * 100;
-      value /= this.player[player].lifeM;
-      return 40 + '%';
-    },
-
     winner: function() {
       if(this.player[1].life <= 0){
         return 'You won!'
@@ -39,6 +33,7 @@ new Vue({
       this.player[0].life = this.player[0].lifeM;
       this.player[1].life = this.player[1].lifeM;
       this.state = 1;
+      this.log = [];
     },
 
     monsterAttack: function() {
@@ -57,10 +52,15 @@ new Vue({
       // locks the control panel
       this.state = 2;
 
-      this.player[defend].life -= special * this.calculateDamage(
+      var damage = special * this.calculateDamage(
         this.player[attack].aMin,
         this.player[attack].aMax
       );
+      this.player[defend].life -= damage;
+
+      this.log.unshift({player: attack,
+                        text: this.player[attack].name + ' hit ' +  this.player[ defend].name + (special > 1 ?  ' hard ' : '') +' for ' + damage + 'hp.'
+                      });
 
       setTimeout(function(attack) {
         if(vm.checkContinue()) {
@@ -83,11 +83,14 @@ new Vue({
       else {
         this.player[player].life += 10;
       }
+      this.log.unshift({player: player,
+                        text: this.player[player].name + ' Heal 10hp.'
+                      });
       this.monsterAttack();
     },
 
     giveUp: function() {
-      alert('gave up');
+      this.state = 0;
     },
 
     calculateDamage: function(min, max) {

@@ -106,7 +106,10 @@
   <section class="row log" v-if="state != 0">
       <div class="small-12 columns">
           <ul>
-              <li>sdf</li>
+              <li
+                v-for="line in log"
+                :class="{'player-turn': line.player == 0, 'monster-turn': line.player == 1}"
+              >{{ line.text }}</li>
           </ul>
       </div>
   </section>
